@@ -263,7 +263,7 @@
 						<div class="form-group">
 						<label class="control-label col-sm-2" for="email">PURPOSE</label>
 						<div class="col-sm-4">
-							<textarea type="email" class="form-control" id="ans_purpose"></textarea>
+							<p type="email" class="form-control" id="ans_purpose"></p>
 						</div>
 						</div>
 
@@ -345,7 +345,7 @@
 			var stbrnch = document.getElementById("stbrnch"+id).textContent;
 			var stsem = document.getElementById("stsem"+id).textContent;
 			var stnatleave = document.getElementById("stnatleave"+id).textContent;
-			var stpurpose = document.getElementById("stpurposeCopy"+id).textContent;
+			var stpurpose = document.getElementById("stpurpose"+id).textContent;
 			var stshedornt = document.getElementById("stshedornt"+id).textContent;
 			var addr = document.getElementById("addrCopy"+id).textContent;
 			// console.log(addr);
@@ -401,6 +401,13 @@
 							opacit = .6;
 							tity = "ACCEPTED";
 						}
+						uplo = item.uploadedImageName;
+						str= uplo.split("_");
+						uplo="";
+						for(var i=1;i<str.length;i++){
+                                uplo+="<a href='./uploads/"+str[i]+"'>"+i+" "+"</a>"
+						}
+					
 						var address = item.address.substring(0,30);
 						address = address.length>=30?address.concat("..."):address;
 						var purpose = item.purpose.substring(0,30);
@@ -411,8 +418,6 @@
 							$('<td id="stbrnch'+item.id+'">').text(item.branch.toUpperCase()),
 							$('<td id="stsem'+item.id+'">').text(item.semester),
 							$('<td id="stnatleave'+item.id+'">').text(item.natureOfLeave),
-							$('<td id="stpurpose'+item.id+'" >').text(purpose),
-							$('<td id="stpurposeCopy'+item.id+'" style="display:none;">').text(item.purpose),
 							$('<td id="stpurpose'+item.id+'">').text(purpose),
 							$('<td id="stshedornt'+item.id+'">').text(item.classScheduledOnLeave.toUpperCase()),
 							$('<td style="display: none" id="ststrtdat'+item.id+'">').text(item.startDate.toUpperCase()),
@@ -421,7 +426,7 @@
 							$('<td id="addrCopy'+item.id+'" style="display:none">').text(item.address),
 							$('<td id="stmbno'+item.id+'">').text(item.mobile),
 							$('<td id="stemai'+item.id+'">').text(item.email),
-							$('<td>').append($('<a>').attr({href:"uploads/"+item.uploadedImageName,target:"_blank"}).text("UP")),
+							$('<td>').append($(uplo)),
 							$('<td id="status_app">').append($('<div title="'+tity+'" style="border:4px solid #222;background:'+color+';width: 25px;height: 25px;border-radius: 0%;margin: auto">'))
 						).appendTo('#records_table');
 						//console.log($tr.wrap('<p>').html());
