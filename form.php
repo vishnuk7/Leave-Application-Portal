@@ -165,7 +165,10 @@ echo "</span>";
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Whether classes are scheduled or not during leave</label>
-                        <input type="text" class="form-control" placeholder="YES/NO or yes/no" name="classScheduledOnLeave">
+                        <select name = "classScheduledOnLeave" class="form-control">
+                             <option value = "yes">YES</option>
+                             <option value = "no">NO</option>
+                        </select>
                     </div>
 
 
@@ -204,9 +207,10 @@ echo "</span>";
                         <div class="file-field input-field">
                         
                     <hr/>
-                    <div id="filediv"><input name="file[]" type="file" id="file"/></div><br/>
-           
-                    <input type="button" id="add_more" class="btn btn-success" value="Add More Files"/>
+                        <div id="files">
+                            <div id="filediv"><input name="file[]" type="file" id="file"/></div>
+                        </div>
+                        <input type="button" id="add_more" class="btn btn-success mt-4" value="Add More Files"/>
                           
                         </div>
                     </div>
@@ -240,10 +244,8 @@ echo "</span>";
 $(document).ready(function() {
 
     $('#add_more').click(function() {
-        $(this).before($("<div/>", {id: 'filediv'}).fadeIn('slow').append(
-                $("<input/>", {name: 'file[]', type: 'file', id: 'file'}),        
-                $("<br/><br/>")
-                ));
+        var div_files = '<div id="filediv"><input name="file[]" type="file" id="file"></div>'
+        $('#files').append(div_files).fadeIn('slow');
     });
 
 

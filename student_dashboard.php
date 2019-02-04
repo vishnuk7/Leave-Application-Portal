@@ -14,7 +14,7 @@
 	<title>student</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -168,6 +168,11 @@
 			 background-color: #796ed4; /* Green */
 			 color: #796ed4;
 		   }
+
+		   .btn-custom{
+			   box-shadow:initial;
+			   width:initial;
+		   }
 	</style>
 </head>
 <body>
@@ -263,7 +268,7 @@
 						<div class="form-group">
 						<label class="control-label col-sm-2" for="email">PURPOSE</label>
 						<div class="col-sm-4">
-							<p type="email" class="form-control" id="ans_purpose"></p>
+							<textarea type="email" class="form-control" id="ans_purpose"></textarea>
 						</div>
 						</div>
 
@@ -302,6 +307,22 @@
 							<p type="email" class="form-control" id="ans_mobile"></p>
 						</div>
 						</div>
+
+						<form action="./core/fileAddModal.php" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+						<input id="Application_id" type="hidden" name="file-id" value=""/>
+		   					<label class="control-label col-sm-2" for="email">Attachments</label>
+							<div class="col-sm-4">
+							<div class="file-field input-field">
+								<div id="files" style="margin-bottom: 8px;">
+									<div id="filediv"><input name="file[]" type="file" id="file"/></div>
+								</div>
+								<a id="add_more" class="btn-sm btn-info mt-4" ><i class="fas fa-plus"></i>Add</a>
+								<button type="submit" class="btn-sm btn-success btn-custom"><i class="fas fa-check-circle"></i>Submit</button>
+							</div>
+							</div>
+						</div>
+						</form>
 						<!--
 						<div class="form-group">
 						<label class="control-label col-sm-2" for="email">EMAIL</label>
@@ -309,12 +330,14 @@
 							<p type="email" class="form-control" id="ans_email"></p>
 						</div>
 						</div>-->
+						
 						<input id="Application_id" type="hidden" value=""/>
 						<div class="form-group">        
 						<div class="col-sm-offset-2 col-sm-10">
 							<button type="button" class="btn btn-default" data-dismiss="modal" style="background: #fff;border-radius: 0px!important;color: #000;outline: none;border-color: #000;border-width: 2px;">&nbsp&nbsp Close &nbsp&nbsp</button>
 						</div>
 						</div>
+						
 					</div>
 					</div>
 				</div>
@@ -345,7 +368,7 @@
 			var stbrnch = document.getElementById("stbrnch"+id).textContent;
 			var stsem = document.getElementById("stsem"+id).textContent;
 			var stnatleave = document.getElementById("stnatleave"+id).textContent;
-			var stpurpose = document.getElementById("stpurpose"+id).textContent;
+			var stpurpose = document.getElementById("stpurposeCopy"+id).textContent;
 			var stshedornt = document.getElementById("stshedornt"+id).textContent;
 			var addr = document.getElementById("addrCopy"+id).textContent;
 			// console.log(addr);
@@ -368,7 +391,7 @@
 			document.getElementById("ans_mobile").textContent = stmbno;
 			//document.getElementById("ans_email").textContent = stemai;
 			document.getElementById("Application_id").setAttribute("value",id);
-
+			document.getElementById("fileId").setAttribute("value",fileId);
 		}
 
 		$(document).ready(function(){
@@ -407,6 +430,9 @@
 						for(var i=1;i<str.length;i++){
                                 uplo+="<a href='./uploads/"+str[i]+"'>"+i+" "+"</a>"
 						}
+						if (!uplo.replace(/\s/g, '').length) {
+                                uplo="<p>No uploads</p>";
+                        }
 					
 						var address = item.address.substring(0,30);
 						address = address.length>=30?address.concat("..."):address;
@@ -419,6 +445,7 @@
 							$('<td id="stsem'+item.id+'">').text(item.semester),
 							$('<td id="stnatleave'+item.id+'">').text(item.natureOfLeave),
 							$('<td id="stpurpose'+item.id+'">').text(purpose),
+							$('<td id="stpurposeCopy'+item.id+'" style="display:none">').text(item.purpose),
 							$('<td id="stshedornt'+item.id+'">').text(item.classScheduledOnLeave.toUpperCase()),
 							$('<td style="display: none" id="ststrtdat'+item.id+'">').text(item.startDate.toUpperCase()),
 							$('<td style="display: none" id="stenddat'+item.id+'">').text(item.endDate.toUpperCase()),
@@ -435,5 +462,48 @@
 		        }
 			})
 		});
+
+// Add More Files		
+$(document).ready(function() {
+
+	$('#add_more').click(function() {
+		var div_files = '<div id="filediv"><input name="file[]" type="file" id="file"></div>'
+		$('#files').append(div_files).fadeIn('slow');
+	});
+
+
+	$('body').on('change', '#file', function(){
+			if (this.files && this.files[0]) {
+				abc += 1; 
+				
+				var z = abc - 1;
+				var x = $(this).parent().find('#previewimg' + z).remove();
+				$(this).before("<div id='abcd"+ abc +"' class='abcd'><img id='previewimg" + abc + "' src=''/></div>");
+			
+				var reader = new FileReader();
+				reader.onload = imageIsLoaded;
+				reader.readAsDataURL(this.files[0]);
+				
+				$(this).hide();
+				$("#abcd"+ abc).append($("<img/>", {id: 'img1', src: './x.png', alt: 'delete'}).click(function() {
+				$(this).parent().parent().remove();
+				}));
+			}
+		});
+
+
+	function imageIsLoaded(e) {
+		$('#previewimg' + abc).attr('src', e.target.result);
+	};
+
+	$('#upload').click(function(e) {
+		var name = $(":file").val();
+		if (!name)
+		{
+			alert("First Image Must Be Selected");
+			e.preventDefault();
+		}
+	});
+});
 	</script>
 </html>
