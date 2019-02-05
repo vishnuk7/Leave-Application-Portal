@@ -323,6 +323,7 @@
 							</div>
 						</div>
 						</form>
+
 						<!--
 						<div class="form-group">
 						<label class="control-label col-sm-2" for="email">EMAIL</label>
@@ -461,6 +462,7 @@
 				});
 		        }
 			})
+
 		});
 
 // Add More Files		
@@ -489,6 +491,7 @@ $(document).ready(function() {
 				$(this).parent().parent().remove();
 				}));
 			}
+
 		});
 
 
