@@ -15,7 +15,7 @@ require 'db.php' ;
 
         if (count($_FILES['file']['name'])) {
 			$j = 0; 
-            // echo "Hello";
+          
             $uploadedImageName =   "";
             $id =  htmlentities($_POST['file-id']);
            
